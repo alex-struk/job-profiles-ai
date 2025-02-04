@@ -13,21 +13,10 @@ End-to-end system for scraping Canadian public sector job postings, generating s
 - **Dynamic Dataset Handling**: Automatic sequence length optimization
 
 ## Installation
-
+```
 poetry install
 poetry shell
-
-`pyproject.toml` core dependencies:
-
-[tool.poetry.dependencies]
-python = ">=3.10,<3.11"
-torch = "2.1.2"
-transformers = "4.35.2"
-peft = "0.7.0"
-accelerate = "0.25.0"
-bitsandbytes = "0.41.3.post2"
-beautifulsoup4 = "4.12.2"
-pandas = "2.1.3"
+```
 
 ## Usage
 
