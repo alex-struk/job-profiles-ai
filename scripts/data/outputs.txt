@@ -1,0 +1,159 @@
+Evaluation Results:
+Average Perplexity: 4.07
+Average Section Coverage: 53.33%
+Individual Perplexities: [3.71946382522583, 4.043717861175537, 4.978779315948486, 3.8068597316741943, 3.7821311950683594]
+Individual Coverage Scores: [0.6666666666666666, 0.3333333333333333, 0.6666666666666666, 0.3333333333333333, 0.6666666666666666]
+
+=== Dataset Analysis ===
+
+Total number of profiles: 122
+Average profile length: 6436.07 characters
+Max profile length: 17230 characters
+Min profile length: 554 characters
+
+Unique headings found:
+- ACCOUNTABILITIES: 4 profiles (3.3%)
+- APPLICATION PROCESS: 117 profiles (95.9%)
+- CLOSE DATE: 122 profiles (100.0%)
+- COMPETENCIES: 2 profiles (1.6%)
+- DIVISION: 122 profiles (100.0%)
+- EDUCATION REQUIREMENTS: 30 profiles (24.6%)
+- JOB CATEGORY: 122 profiles (100.0%)
+- JOB TYPE: 122 profiles (100.0%)
+- JOB URL: 122 profiles (100.0%)
+- LOCATION: 122 profiles (100.0%)
+- MINISTRY/ORGANIZATION: 122 profiles (100.0%)
+- ORGANIZATION: 117 profiles (95.9%)
+- POSITION CLASSIFICATION: 122 profiles (100.0%)
+- PROVISOS: 11 profiles (9.0%)
+- QUALIFICATIONS: 85 profiles (69.7%)
+- SALARY RANGE: 122 profiles (100.0%)
+- SKILLS: 1 profiles (0.8%)
+- TEMPORARY END DATE: 16 profiles (13.1%)
+- UNION: 95 profiles (77.9%)
+- WORK OPTIONS: 96 profiles (78.7%)
+Analyzing token lengths..
+
+=== Token Length Analysis ===
+Average tokens per profile: 1420.12
+Max tokens: 3668
+Min tokens: 175
+
+
+Train Log:
+
+{'loss': 1.4738, 'grad_norm': 0.2521440088748932, 'learning_rate': 6e-06, 'epoch': 0.05}
+{'loss': 1.4497, 'grad_norm': 0.25607407093048096, 'learning_rate': 1.2e-05, 'epoch': 0.1}                                                                                                                      
+{'loss': 1.3214, 'grad_norm': 0.17493246495723724, 'learning_rate': 1.8e-05, 'epoch': 0.14}                                                                                                                      
+{'loss': 1.3025, 'grad_norm': 0.20809796452522278, 'learning_rate': 2.4e-05, 'epoch': 0.19}                                                                                                                      
+{'loss': 1.4533, 'grad_norm': 0.24326731264591217, 'learning_rate': 3e-05, 'epoch': 0.24}                                                                                                                        
+{'loss': 1.389, 'grad_norm': 0.21713708341121674, 'learning_rate': 2.995376000599692e-05, 'epoch': 0.29}                                                                                                        
+{'loss': 1.3797, 'grad_norm': 0.26009804010391235, 'learning_rate': 2.981532510892707e-05, 'epoch': 0.33}                                                                                                        
+{'loss': 1.4147, 'grad_norm': 0.29485347867012024, 'learning_rate': 2.958554880596515e-05, 'epoch': 0.38}                                                                                                        
+{'loss': 1.4303, 'grad_norm': 0.2729431986808777, 'learning_rate': 2.9265847744427305e-05, 'epoch': 0.43}                                                                                                        
+{'loss': 1.3562, 'grad_norm': 0.2122245877981186, 'learning_rate': 2.8858192987669303e-05, 'epoch': 0.48}                                                                                                        
+{'loss': 1.4552, 'grad_norm': 0.27211225032806396, 'learning_rate': 2.8365097862825516e-05, 'epoch': 0.52}                                                                                                      
+{'loss': 1.4158, 'grad_norm': 0.26288145780563354, 'learning_rate': 2.7789602465311384e-05, 'epoch': 0.57}                                                                                                      
+{'loss': 1.353, 'grad_norm': 0.25226712226867676, 'learning_rate': 2.7135254915624213e-05, 'epoch': 0.62}                                                                                                        
+{'loss': 1.3306, 'grad_norm': 0.26714029908180237, 'learning_rate': 2.6406089484000465e-05, 'epoch': 0.67}                                                                                                      
+{'loss': 1.4141, 'grad_norm': 0.24881017208099365, 'learning_rate': 2.5606601717798212e-05, 'epoch': 0.71}                                                                                                      
+{'loss': 1.3003, 'grad_norm': 0.23317506909370422, 'learning_rate': 2.4741720724952754e-05, 'epoch': 0.76}                                                                                                      
+{'loss': 1.4252, 'grad_norm': 0.2699565589427948, 'learning_rate': 2.3816778784387097e-05, 'epoch': 0.81}                                                                                                        
+{'loss': 1.2966, 'grad_norm': 0.23200657963752747, 'learning_rate': 2.2837478470739234e-05, 'epoch': 0.86}                                                                                                      
+{'loss': 1.4444, 'grad_norm': 0.3156622052192688, 'learning_rate': 2.1809857496093203e-05, 'epoch': 0.9}                                                                                                        
+{'loss': 1.3496, 'grad_norm': 0.3134026825428009, 'learning_rate': 2.074025148547635e-05, 'epoch': 0.95}                                                                                                        
+{'loss': 1.4586, 'grad_norm': 0.41757282614707947, 'learning_rate': 1.963525491562421e-05, 'epoch': 1.0}                                                                                                        
+{'loss': 1.324, 'grad_norm': 0.27264103293418884, 'learning_rate': 1.8501680457838582e-05, 'epoch': 1.05}                                                                                                        
+{'loss': 1.3726, 'grad_norm': 0.37284886837005615, 'learning_rate': 1.7346516975603466e-05, 'epoch': 1.1}                                                                                                        
+{'loss': 1.249, 'grad_norm': 0.27607980370521545, 'learning_rate': 1.6176886435917676e-05, 'epoch': 1.14}                                                                                                        
+{'loss': 1.4073, 'grad_norm': 0.3269675076007843, 'learning_rate': 1.5e-05, 'epoch': 1.19}                                                                                                                      
+{'loss': 1.4166, 'grad_norm': 0.2996961176395416, 'learning_rate': 1.3823113564082329e-05, 'epoch': 1.24}                                                                                                        
+{'loss': 1.3578, 'grad_norm': 0.3289383053779602, 'learning_rate': 1.2653483024396535e-05, 'epoch': 1.29}                                                                                                        
+{'loss': 1.3702, 'grad_norm': 0.3371857702732086, 'learning_rate': 1.1498319542161424e-05, 'epoch': 1.33}                                                                                                        
+{'loss': 1.4467, 'grad_norm': 0.3283054828643799, 'learning_rate': 1.036474508437579e-05, 'epoch': 1.38}                                                                                                        
+{'loss': 1.358, 'grad_norm': 0.3196144998073578, 'learning_rate': 9.259748514523654e-06, 'epoch': 1.43}                                                                                                          
+{'loss': 1.2382, 'grad_norm': 0.2657897472381592, 'learning_rate': 8.190142503906798e-06, 'epoch': 1.48}                                                                                                        
+{'loss': 1.2739, 'grad_norm': 0.2552036941051483, 'learning_rate': 7.1625215292607685e-06, 'epoch': 1.52}                                                                                                        
+{'loss': 1.3143, 'grad_norm': 0.2584255635738373, 'learning_rate': 6.1832212156129045e-06, 'epoch': 1.57}                                                                                                        
+{'loss': 1.426, 'grad_norm': 0.35597169399261475, 'learning_rate': 5.258279275047247e-06, 'epoch': 1.62}                                                                                                        
+{'loss': 1.3162, 'grad_norm': 0.35242199897766113, 'learning_rate': 4.393398282201788e-06, 'epoch': 1.67}                                                                                                        
+{'loss': 1.3929, 'grad_norm': 0.31314048171043396, 'learning_rate': 3.5939105159995363e-06, 'epoch': 1.71}                                                                                                      
+{'loss': 1.3287, 'grad_norm': 0.3601314127445221, 'learning_rate': 2.86474508437579e-06, 'epoch': 1.76}                                                                                                          
+{'loss': 1.4228, 'grad_norm': 0.35477736592292786, 'learning_rate': 2.2103975346886172e-06, 'epoch': 1.81}                                                                                                      
+{'loss': 1.3488, 'grad_norm': 0.34649527072906494, 'learning_rate': 1.6349021371744833e-06, 'epoch': 1.86}                                                                                                      
+{'loss': 1.3434, 'grad_norm': 0.2934471368789673, 'learning_rate': 1.1418070123306989e-06, 'epoch': 1.9}                                                                                                        
+{'loss': 1.3523, 'grad_norm': 0.37630417943000793, 'learning_rate': 7.341522555726971e-07, 'epoch': 1.95}                                                                                                        
+{'loss': 1.3101, 'grad_norm': 0.3776594400405884, 'learning_rate': 4.1445119403485165e-07, 'epoch': 2.0}                                                                                                        
+{'loss': 1.4315, 'grad_norm': 0.33553603291511536, 'learning_rate': 1.8467489107293513e-07, 'epoch': 2.05}                                                                                                      
+{'loss': 1.3632, 'grad_norm': 0.35871225595474243, 'learning_rate': 4.623999400308054e-08, 'epoch': 2.1}                                                                                                        
+{'loss': 1.3691, 'grad_norm': 0.3436009883880615, 'learning_rate': 0.0, 'epoch': 2.14}    
+
+
+Example output:
+
+Prompt: "Profile: \n\n # **Title:** Specialist, Creative \n\n **Location:** Vancouver, BC V6B 0N8 CA (Primary) \n\n **Job Type:** Regular Full Time \n\n **Salary Range:** $76,071.18 - $86,658.48 annually \n\n **Close Date:** 2/18/2025
+
+Profile:
+
+ # **Title:** Specialist, Creative
+
+ **Location:** Vancouver, BC V6B 0N8 CA (Primary)
+
+ **Job Type:** Regular Full Time
+
+ **Salary Range:** $76,071.18 - $86,658.48 annually
+
+ **Close Date:** 2/18/2025
+
+ **Job ID:** 10000357
+
+ **Organization:** BC Public Service
+
+ **Ministry:** Ministry of Citizens' Services
+
+ **Job Description:**
+
+**Job Summary**
+
+The BC Public Service is looking for a creative, innovative and collaborative individual to join the Digital Services team in the Ministry of Citizens’ Services.
+
+The Digital Services team is responsible for the design, development and delivery of digital services for the people of British Columbia. We are looking for a creative, innovative and collaborative individual to join our team.
+
+The Digital Services team is responsible for the design, development and delivery of digital services for the people of British Columbia. We are looking for a creative, innovative and collaborative individual to join our team.
+
+**The Opportunity**
+
+The Specialist, Creative will be responsible for the design and development of digital services for the people of British Columbia. You will work with a team of designers, developers, and product managers to create and deliver digital services that meet the needs of our users.
+
+**The Role**
+
+As a Specialist, Creative, you will be responsible for:
+
+* Designing and developing digital services that meet the needs of our users.
+* Working with a team of designers, developers, and product managers to create and deliver digital services.
+* Collaborating with stakeholders to understand their needs and requirements.
+* Ensuring that digital services are accessible, usable, and secure.
+* Staying up-to-date with the latest trends and technologies in the field of digital services.
+
+**The Qualifications**
+
+To be successful in this role, you will need to have:
+
+* A degree or diploma in design, computer science, or a related field.
+* Experience in designing and developing digital services.
+* Strong communication and collaboration skills.
+* The ability to work in a fast-paced and dynamic environment.
+* A passion for creating digital services that make a difference in the lives of our users.
+
+**The Benefits**
+
+In addition to a competitive salary, the BC Public Service offers a comprehensive benefits package that includes:
+
+* Extended health and dental coverage.
+* A pension plan.
+* A flexible work environment.
+* Professional development opportunities.
+
+**The Application Process**
+
+To apply for this opportunity, please submit your resume and cover letter through the BC Public Service website.
