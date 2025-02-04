@@ -53,9 +53,11 @@ python scripts/test_lora/main.py
 ```
 
 
-** Output Example **
+**Output Example**
 
-Prompt: `"Profile: \n\n # **Title:** Specialist, Creative \n\n **Location:** Vancouver, BC V6B 0N8 CA (Primary) \n\n **Job Type:** Regular Full Time \n\n **Salary Range:** $76,071.18 - $86,658.48 annually \n\n **Close Date:** 2/18/2025`
+Prompt: 
+
+`"Profile: \n\n # **Title:** Specialist, Creative \n\n **Location:** Vancouver, BC V6B 0N8 CA (Primary) \n\n **Job Type:** Regular Full Time \n\n **Salary Range:** $76,071.18 - $86,658.48 annually \n\n **Close Date:** 2/18/2025`
 
 Output:
 
