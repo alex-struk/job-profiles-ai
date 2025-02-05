@@ -1,5 +1,29 @@
-from jobstore_ai.llm.main import generate_profile
+from jobstore_ai.llm.main import generate_profile, get_model_id, getModel
+from peft import  PeftModel
+from transformers import AutoTokenizer
 
+def generate_profile(prompt, model_path="./lora_job_adapter"):
+    # Load model with adapter
+    model = getModel()
+    model = PeftModel.from_pretrained(model, model_path)
+    tokenizer = AutoTokenizer.from_pretrained(get_model_id(),
+        # model_max_length=4096  # Next power of 2 above max tokens
+    )
+    tokenizer.pad_token = tokenizer.eos_token
+    # model.resize_token_embeddings(len(tokenizer))
+    
+    # Generate
+    inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+    outputs = model.generate(
+        inputs.input_ids,
+        attention_mask=inputs['attention_mask'],
+        # max_new_tokens=3700,
+        temperature=0.1,
+        do_sample=True,
+        pad_token_id=tokenizer.eos_token_id 
+    )
+    
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 def runMain():
     # TRY LORA - Generate new profile with lora

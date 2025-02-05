@@ -1,7 +1,7 @@
 from transformers import TrainingArguments, Trainer
-from peft import LoraConfig, PeftModel, get_peft_model, prepare_model_for_kbit_training
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, TrainerCallback
 
 
 from jobstore_ai.cleaning.main import generate_job_profiles_md
@@ -69,16 +69,22 @@ training_args = TrainingArguments(
     bf16=True,
     logging_steps=5 if QUICK_TEST else 1,
     # Gradient clipping, helps prevent gradient explosion during training by scaling down gradients when they exceed the specified threshold
-    #  1.0 to prevent exploding gradients
-    max_grad_norm=0.8,
+    # Balances gradient stability with learning efficiency
+    # Larger models (e.g., 7B+ parameters) often require stricter clipping (lower values like 0.3) to prevent instability
+    # Smaller LoRA adapters (rank ≤32) may tolerate higher thresholds (0.5-1.0)
+    # Sudden spikes in grad_norm warrant lower max_grad_norm
+    # Lower learning rates (e.g., 2e-5 to 4e-4) pair well with higher clipping values (0.5-1.0), while aggressive rates need stricter clipping
+    # Monitor the grad_norm metric - if it consistently stays below 50% of your threshold, consider increasing it slightly to allow faster convergence
+    # If clipping occurs >20% of steps: lower threshold or learning rate
+    max_grad_norm=1.0,
     # 10% of max_steps
     warmup_ratio=0.1,
     # smaller datasets typically need fewer steps. The formula for calculating max_steps is:
     # max_steps = (num_samples / effective_batch_size[batch_size*gradient_accumulation]) * num_epochs
     # Increasing max_steps beyond what's needed for complete data passes means the model will see samples multiple times
-    max_steps = 20 if QUICK_TEST else int(120/(2*4)*3),
+    max_steps = 20 if QUICK_TEST else int(120/(6)*3),
     # learning rate schedule type - how learning rate changes through the training process
-    lr_scheduler_type="cosine_with_restarts",
+    lr_scheduler_type="constant",
     # Updates model weights based on loss gradients
     # adamw - Adaptive Moment Estimation with Weight Decay
     # use paged_ variant if running out of memory
@@ -97,15 +103,16 @@ training_args = TrainingArguments(
 lora_config = LoraConfig(
     # Rank - controls the complexity of LoRA adaptations. Higher values (16-64) enable better learning but increase memory usage, 
     # while lower values (4-8) are more efficient but may limit capacity
-    r=4 if QUICK_TEST else 4,
+    r=4 if QUICK_TEST else 64,
     # Scaling factor that determines adaptation strength. Typically set equal to or double the rank value. Higher values increase learning impact
-    lora_alpha=8 if QUICK_TEST else 4,
+    # Some models have it as 1/2 of r (like mistral - investigate this)
+    lora_alpha=8 if QUICK_TEST else 32,
     # Specifies which layers to adapt
     target_modules=["q_proj", "v_proj"] if QUICK_TEST else [
         "q_proj",
         "v_proj",
-        # "k_proj", 
-        # "o_proj",   # Important for output generation, final transformation in the self-attention mechanism
+        "k_proj", 
+        "o_proj",   # Important for output generation, final transformation in the self-attention mechanism
         # ----
         # "lm_head",  # Critical for vocabulary generation - vocabulary space adaptations are rarely needed
         # "gate_proj",
@@ -187,14 +194,18 @@ class JobProfileDataset(Dataset):
         self.examples = []
         
         working_profiles = profiles[:10] if QUICK_TEST else profiles
+        augmented_profiles = augment_profiles(working_profiles)
+        working_profiles = working_profiles + augmented_profiles
         
-        # Calculate prompt tokens first
+        # --- PROMPT HANDLING ---
+        # Tokenize the fixed prompt template separately
         prompt = "Profile: \n\n"
         prompt_enc = tokenizer(prompt, add_special_tokens=False, return_tensors="pt")
         self.prompt_ids = prompt_enc['input_ids'][0]
         self.prompt_length = len(self.prompt_ids)
 
-        # Calculate maximum content length dynamically
+        # --- DYNAMIC LENGTH CALCULATION ---
+        # Determine maximum sequence length needed (prompt + longest profile + EOS)
         max_content_length = 0
         tokenized_profiles = []
         
@@ -216,31 +227,50 @@ class JobProfileDataset(Dataset):
         # Cap at model's maximum context length (4096 for Mistral)
         self.max_length = min(max_content_length, 4096)
 
+        # --- DATA PACKAGING ---
         # Process tokenized profiles with calculated max_length
         for profile_ids in tokenized_profiles:
+            # Construct full sequence: prompt + profile + EOS
             full_content = torch.cat([
                 self.prompt_ids,
                 profile_ids,
                 torch.tensor([self.tokenizer.eos_token_id])
             ])
             
+            # Handle overflow with smart truncation:
+            # Always preserve prompt + EOS, truncate middle content
             if len(full_content) > self.max_length:
+                print('TRUNCATING')
                 full_content = torch.cat([
                     full_content[:self.max_length-1],
                     torch.tensor([self.tokenizer.eos_token_id])
                 ])
             
+            # --- PADDING STRATEGY ---
+            # Left-pad sequences
             pad_length = self.max_length - len(full_content)
             input_ids = torch.cat([
                 torch.full((pad_length,), self.tokenizer.pad_token_id, dtype=torch.long),
                 full_content
             ])
             
+            # --- MASKING LOGIC ---
+            # Attention mask: 0 for padding, 1 for real content
             attention_mask = (input_ids != self.tokenizer.pad_token_id).long()
+            # Labels: -100 masks tokens from loss calculation
             labels = input_ids.clone()
             labels[:pad_length] = -100
+            # prevent the model from learning anything about the prompt structure itself 
+            # - it only learns to generate appropriate continuations given the prompt
             labels[pad_length:pad_length+self.prompt_length] = -100
             
+            # Final example packaging
+            self.examples.append({
+                'input_ids': input_ids,
+                'attention_mask': attention_mask,
+                'labels': labels
+            })
+
             # Debug outputs
             # torch.set_printoptions(profile="full")
             # print(f"Total length: {len(input_ids)}")
@@ -252,11 +282,7 @@ class JobProfileDataset(Dataset):
             # print(f"Labels:    {['-100' if x == -100 else x for x in labels[:15].tolist()]}")
             # print(f"Decoded content start: '{tokenizer.decode(input_ids[pad_length:pad_length+15])}'")
 
-            self.examples.append({
-                'input_ids': input_ids,
-                'attention_mask': attention_mask,
-                'labels': labels
-            })
+            
 
     def __len__(self):
         return len(self.examples)
@@ -273,38 +299,65 @@ def train_model(model, dataset, tokenizer, output_dir="./lora_job_adapter"):
         model=model,
         args=training_args,
         train_dataset=dataset,
+        callbacks=[GradientMonitorCallback(warning_threshold=0.3)]
     )
     
     trainer.train()
     model.save_pretrained(output_dir)
 
-# EVAL
-def generate_profile(prompt, model_path="./lora_job_adapter"):
-    # Load model with adapter
-    model = getModel()
-    model = PeftModel.from_pretrained(model, model_path)
-    tokenizer = AutoTokenizer.from_pretrained(model_id,
-        # model_max_length=4096  # Next power of 2 above max tokens
-    )
-    tokenizer.pad_token = tokenizer.eos_token
-    # model.resize_token_embeddings(len(tokenizer))
+
+class GradientMonitorCallback(TrainerCallback):
+    def __init__(self, warning_threshold=0.3):
+        self.warning_threshold = warning_threshold
+        self.last_warning_step = 0
+        
+    def on_log(self, args, state, control, logs=None, **kwargs):
+        if not logs:
+            return
+        
+        current_step = state.global_step
+        grad_norm = logs.get('grad_norm', 0)
+        
+        # Only warn every 5 steps to avoid spam
+        if grad_norm < self.warning_threshold: #and current_step > (self.last_warning_step + 5):
+            print(f"\n⚠️ Step {current_step}: Low gradient norm ({grad_norm:.4f})")
+            self.last_warning_step = current_step
+
+
+def augment_profiles(profiles):
+    import nlpaug.augmenter.char as nac
     
-    # Generate
-    inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
-    outputs = model.generate(
-        inputs.input_ids,
-        attention_mask=inputs['attention_mask'],
-        # max_new_tokens=3700,
-        temperature=0.1,
-        do_sample=True,
-        pad_token_id=tokenizer.eos_token_id 
+    # Custom tokenizers to preserve formatting
+    def custom_tokenizer(text):
+        return text.split(' ')  # Split on spaces only
+    
+    def custom_reverse_tokenizer(tokens):
+        return ' '.join(tokens)  # Rejoin with single spaces
+    
+    # Initialize augmenter with format preservation
+    aug = nac.KeyboardAug(
+        aug_char_p=0.3,
+        aug_word_p=0.3,
+        tokenizer=custom_tokenizer,
+        reverse_tokenizer=custom_reverse_tokenizer,
+        include_special_char=False,
+        stopwords=['*', '#', ':']  # Protect markdown syntax
     )
     
-    return tokenizer.decode(outputs[0], skip_special_tokens=True)
-
-
-
-
+    augmented = []
+    for profile in profiles:
+        try:
+            # Augment while preserving structure
+            aug_text = aug.augment(profile)[0]
+            
+            # Post-process to fix any residual formatting issues
+            aug_text = aug_text.replace(' * ', '*').replace(' : ', ':')
+            augmented.append(aug_text)
+        except Exception as e:
+            print(f"Augmentation failed: {e}")
+            augmented.append(profile)
+            
+    return augmented
 
 def runMain():
     df = loadCSVData()

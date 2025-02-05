@@ -131,3 +131,6 @@ In addition to a competitive salary, the BC Public Service offers a comprehensiv
 
 To apply for this opportunity, please submit your resume and cover letter through the BC Public Service website.
 ```
+
+**To do**
+- Setup Tensorboard/Weights & Biases to track train/grad_norm
