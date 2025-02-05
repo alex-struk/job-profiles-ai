@@ -1,5 +1,5 @@
 [project]
-name = "job-scraper"
+name = "jobstore_ai"
 version = "0.1.0"
 description = ""
 authors = [

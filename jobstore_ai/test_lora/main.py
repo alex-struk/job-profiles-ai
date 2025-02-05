@@ -1,4 +1,4 @@
-from job_scraper.llm.main import generate_profile
+from jobstore_ai.llm.main import generate_profile
 
 
 def runMain():

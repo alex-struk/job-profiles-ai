@@ -4,8 +4,8 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
 
-from job_scraper.cleaning.main import generate_job_profiles_md
-from job_scraper.util.main import loadCSVData
+from jobstore_ai.cleaning.main import generate_job_profiles_md
+from jobstore_ai.util.main import loadCSVData
 from huggingface_hub import login
 
 import torch

@@ -18,6 +18,10 @@ poetry install
 poetry shell
 ```
 
+Run `poetry env info --path` to get interpreter path
+
+Ctrl+Shift+P, Python->Select Interpreter, set the path.
+
 ## Usage
 
 ### 1. Data Collection
