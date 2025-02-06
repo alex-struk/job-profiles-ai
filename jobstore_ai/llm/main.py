@@ -255,20 +255,27 @@ class JobProfileDataset(Dataset):
             ])
             
             # --- MASKING LOGIC ---
-            # Attention mask: 0 for padding, 1 for real content
+            # Attention mask: 0 for padding, 1 for real content (includes prompt template + content)
             attention_mask = (input_ids != self.tokenizer.pad_token_id).long()
+            # set final eos token to 1, as it should be included
+            attention_mask[-1]=1
             # Labels: -100 masks tokens from loss calculation
             labels = input_ids.clone()
             labels[:pad_length] = -100
-            # prevent the model from learning anything about the prompt structure itself 
+            # The model should only learn to predict the profile text, not reproduce the prompt template itself.
             # - it only learns to generate appropriate continuations given the prompt
+            # todo: this may be incorrect, since model doesn't learn the prompt/content boundary
             labels[pad_length:pad_length+self.prompt_length] = -100
             
+            assert (labels[attention_mask == 0] == -100).all(), "Padding not masked"
+            assert (labels[pad_length:pad_length+self.prompt_length] == -100).all(), "Prompt not masked"
+            assert labels[-1] == tokenizer.eos_token_id, "EOS missing"
+
             # Final example packaging
             self.examples.append({
-                'input_ids': input_ids,
-                'attention_mask': attention_mask,
-                'labels': labels
+                'input_ids': input_ids, #  tokenized versions of the input text
+                'attention_mask': attention_mask, # binary tensor that specifies which tokens should be attended to by the model
+                'labels': labels # The loss is calculated by comparing the predicted token with labels[k]
             })
 
             # Debug outputs
