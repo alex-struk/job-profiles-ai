@@ -61,75 +61,39 @@ python scripts/test_lora/main.py
 
 Prompt: 
 
-`"Profile: \n\n # **Title:** Specialist, Creative \n\n **Location:** Vancouver, BC V6B 0N8 CA (Primary) \n\n **Job Type:** Regular Full Time \n\n **Salary Range:** $76,071.18 - $86,658.48 annually \n\n **Close Date:** 2/18/2025`
+`prompt = f"Profile: \n\n # **Title:** AI Data Science Engineer \n"`
 
 Output:
 
 ```
-Profile:
+ # **Title:** AI Data Science Engineer
+ # **Location:** Vancouver, bc CA (Primary)
+ # **Job Type:** Regular Full Time
+ # **Salary Range:** $82,873.76 - $103,585.78 annually
+ # **Close Date:** 2/24/2025
+ # **Ministry/Organization:** BC Public Service -> Children & Family Development
+ # **Division:** Ministry of Children and Family Development
+ # **Position Classification:** Scientist 1
+ # **Job Category:** Scientific and Professional, Scientific and Professional Leads
+ # **Union:** GEU
+ # **Job URL:** [Link](https://bcpublicservice.hua.hrsmart.com/hr/ats/Posting/view/119241)
 
- # **Title:** Specialist, Creative
+**Employement Type:** Permanent
 
- **Location:** Vancouver, BC V6B 0N8 CA (Primary)
+**Temporary/Coverage Opportunity:** No
 
- **Job Type:** Regular Full Time
+**Indigenous Applicants:** Consideration for this position is available to Indigenous (First Nations, Status or Non-Status, Métis, or Inuit) applicants who self-identify as Indigenous in their application and who meet the minimum qualifications. Applicants who do not self-identify as Indigenous will also be considered.
 
- **Salary Range:** $76,071.18 - $86,658.48 annually
+**Organization:** This position is located at the Ministry of Children and Family Development in Vancouver.
 
- **Close Date:** 2/18/2025
+**Application Process:** Please review the required documents section at the bottom of the posting for information on how to apply.
 
- **Job ID:** 10000357
-
- **Organization:** BC Public Service
-
- **Ministry:** Ministry of Citizens' Services
-
- **Job Description:**
-
-**Job Summary**
-
-The BC Public Service is looking for a creative, innovative and collaborative individual to join the Digital Services team in the Ministry of Citizens’ Services.
-
-The Digital Services team is responsible for the design, development and delivery of digital services for the people of British Columbia. We are looking for a creative, innovative and collaborative individual to join our team.
-
-The Digital Services team is responsible for the design, development and delivery of digital services for the people of British Columbia. We are looking for a creative, innovative and collaborative individual to join our team.
-
-**The Opportunity**
-
-The Specialist, Creative will be responsible for the design and development of digital services for the people of British Columbia. You will work with a team of designers, developers, and product managers to create and deliver digital services that meet the needs of our users.
-
-**The Role**
-
-As a Specialist, Creative, you will be responsible for:
-
-* Designing and developing digital services that meet the needs of our users.
-* Working with a team of designers, developers, and product managers to create and deliver digital services.
-* Collaborating with stakeholders to understand their needs and requirements.
-* Ensuring that digital services are accessible, usable, and secure.
-* Staying up-to-date with the latest trends and technologies in the field of digital services.
-
-**The Qualifications**
-
-To be successful in this role, you will need to have:
-
-* A degree or diploma in design, computer science, or a related field.
-* Experience in designing and developing digital services.
-* Strong communication and collaboration skills.
-* The ability to work in a fast-paced and dynamic environment.
-* A passion for creating digital services that make a difference in the lives of our users.
-
-**The Benefits**
-
-In addition to a competitive salary, the BC Public Service offers a comprehensive benefits package that includes:
-
-* Extended health and dental coverage.
-* A pension plan.
-* A flexible work environment.
-* Professional development opportunities.
-
-**The Application Process**
-
-To apply for this opportunity, please submit your resume and cover letter through the BC Public Service website.
+**The BC Public Service is committed to creating a diverse workplace to represent the population we serve and to better meet the needs of our citizens. Consider joining our team and being part of an innovative, inclusive and rewarding workplace.
+We are committed to ensuring that reasonable accommodations are available throughout the hiring process, including the assessment and selection stages. Please email the individual or contact listed on the posting if you require an accommodation to fully participate in the hiring process.
+The Indigenous Applicant Advisory Service is available to Canadian Indigenous (First Nations [status or non-status], Métis, or Inuit) applicants. Indigenous applicants can contact this service for personalized guidance on the BC Public Service hiring process including job applications and interviews.
+The BC Public Service is an award-winning employer and offers employees competitive benefits, amazing learning opportunities and a chance to engage in rewarding work with exciting career development opportunities. For more information, please see What We Offer.
+The BC Public Service is committed to creating a diverse workplace to represent the population we serve and to better meet the needs of our citizens. Consider joining our team and being part of an innovative, inclusive and rewarding workplace.
+The BC Public Service is an equal opportunity employer committed to creating a diverse workforce to represent the population we serve. Applicants with disabilities may be granted accommodation at any stage of the hiring process. Please contact the hiring team at the email below if you require such an accommodation.
 ```
 
 **To do**
